@@ -1,7 +1,8 @@
 FROM python:3.9-alpine3.13
-LABEL maintainer="your-name"
+LABEL maintainer="https://github.com/aliturkese"
 
 ENV PYTHONUNBUFFERED 1
+ENV PATH="/py/bin:$PATH"
 
 COPY ./requirements.txt /tmp/requirements.txt
 COPY ./requirements.dev.txt /tmp/requirements.dev.txt
@@ -19,9 +20,10 @@ RUN python -m venv /py && \
     if [ "$DEV" = "true" ]; then \
         /py/bin/pip install -r /tmp/requirements.dev.txt; \
     fi && \
+    /py/bin/python -m django --version && \
     rm -rf /tmp && \
     apk del .tmp-build-dev && \
     adduser \
         --disabled-password \
         --no-create-home \
-        django-user 
+        django-user
