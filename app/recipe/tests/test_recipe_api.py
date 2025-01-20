@@ -44,7 +44,7 @@ class PublicRecipeAPITests(TestCase):
         """Test auth is required to call API."""
         res = self.client.get(RECIPES_URL)
 
-        self.assertEqual(res.status_code, status.HTTP_401_UNATHORIZED)
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
 class PrivateRecipeAPITests(TestCase):
@@ -81,8 +81,7 @@ class PrivateRecipeAPITests(TestCase):
 
         res = self.client.get(RECIPES_URL)
 
-        recipes = Recipe.objects.filer(user=self.user)
+        recipes = Recipe.objects.filter(user=self.user)
         serializer = RecipeSerializer(recipes, many=True)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
-
